@@ -31,9 +31,9 @@ namespace AvatarAnalyzer.CheckingFunctions
                 if (SMR.probeAnchor != null)
                 {
                     if (!OIMG.Has(SMR.probeAnchor))
-                        OI.AddAttribute(InfoType.Warn, ObjectItem.QuickCreateKey(InformationCode.ProbeAnchorOutOfRange,SMR));
+                        OI.AddAttribute(InfoType.Warn, ObjectItem.QuickCreateKey(InformationCode.ProbeAnchorOutOfRange, SMR));
                     else
-                        OIMG.Get(SMR.probeAnchor).AddAttribute(InfoType.Normal, ObjectItem.QuickCreateKey(InformationCode.IsProbeAnchor),SMR);
+                        OIMG.Get(SMR.probeAnchor).AddAttribute(InfoType.Normal, ObjectItem.QuickCreateKey(InformationCode.IsProbeAnchor), SMR);
                 }
                 if (SMR.sharedMesh == null)
                     OI.HasAttribute(InfoType.Warn, ObjectItem.QuickCreateKey(InformationCode.HasntSkinnedMesh));
@@ -64,8 +64,9 @@ namespace AvatarAnalyzer.CheckingFunctions
                     });
 
                     //ボーンが存在しない
-                    if (boneTransList.Count == 0)
-                        OI.AddAttribute(InfoType.Warn, ObjectItem.QuickCreateKey(InformationCode.SkinnedMeshRendererHasntBone));
+                    //BlendShapeもない(あると0ボーン描画される場合もあり)
+                    if (boneTransList.Count == 0 && SMR.sharedMesh.blendShapeCount > 0)
+                        OI.AddAttribute(InfoType.Warn, ObjectItem.QuickCreateKey(InformationCode.SkinnedMeshRendererHasntBone, SMR));
                 }
 
                 //Null Material
